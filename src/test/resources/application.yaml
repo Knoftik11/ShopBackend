@@ -1,0 +1,11 @@
+ktor:
+  deployment:
+    port: 8080
+
+jwt:
+  secret: "test-secret-1234567890"
+  issuer: "shoproz"
+  audience: "shoproz-users"
+  realm: "shoproz access"
+  accessTtlMinutes: 30
+  refreshTtlDays: 30
