@@ -22,6 +22,13 @@ dependencies {
     implementation(ktorLibs.serialization.kotlinx.json)
     implementation(ktorLibs.server.cors)
     implementation(ktorLibs.server.statusPages)
+    implementation(libs.exposed.core)
+    implementation(libs.exposed.dao)
+    implementation(libs.exposed.jdbc)
+    implementation(libs.exposed.java.time)
+    implementation(libs.postgresql)
+    implementation(libs.hikari)
+    implementation(libs.bcrypt)
     implementation(libs.logback.classic)
 
     testImplementation(kotlin("test"))

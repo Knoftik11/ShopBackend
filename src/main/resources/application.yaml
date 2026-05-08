@@ -3,6 +3,15 @@ ktor:
     port: 8080
   application:
     modules:
+      - com.example.DatabaseFactoryKt.configureDatabase
       - com.example.SerializationKt.configureSerialization
       - com.example.HTTPKt.configureHTTP
       - com.example.RoutingKt.configureRouting
+
+db:
+  jdbcUrl: "jdbc:postgresql://localhost:5432/shoproz"
+  user: "postgres"
+  password: "postgres"
+  driver: "org.postgresql.Driver"
+  maxPoolSize: 10
+
