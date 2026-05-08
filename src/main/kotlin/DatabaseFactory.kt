@@ -1,9 +1,13 @@
 package com.example
 
+import com.example.tables.Categories
+import com.example.tables.Users
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import io.ktor.server.application.*
 import org.jetbrains.exposed.sql.Database
+import org.jetbrains.exposed.sql.SchemaUtils
+import org.jetbrains.exposed.sql.transactions.transaction
 
 fun Application.configureDatabase() {
     val cfg = environment.config.config("db")
@@ -21,4 +25,8 @@ fun Application.configureDatabase() {
     val ds = HikariDataSource(hikari)
     Database.connect(ds)
     log.info("DB connected: ${cfg.property("jdbcUrl").getString()}")
+
+    transaction {
+        SchemaUtils.create(Users, Categories)
+    }
 }
