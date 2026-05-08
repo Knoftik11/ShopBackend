@@ -2,6 +2,8 @@ package com.example
 
 import com.example.tables.CartItems
 import com.example.tables.Categories
+import com.example.tables.OrderItems
+import com.example.tables.Orders
 import com.example.tables.Products
 import com.example.tables.Users
 import com.zaxxer.hikari.HikariConfig
@@ -29,6 +31,6 @@ fun Application.configureDatabase() {
     log.info("DB connected: ${cfg.property("jdbcUrl").getString()}")
 
     transaction {
-        SchemaUtils.create(Users, Categories, Products, CartItems)
+        SchemaUtils.create(Users, Categories, Products, CartItems, Orders, OrderItems)
     }
 }
