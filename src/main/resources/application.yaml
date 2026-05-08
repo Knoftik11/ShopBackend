@@ -6,6 +6,7 @@ ktor:
       - com.example.DatabaseFactoryKt.configureDatabase
       - com.example.SerializationKt.configureSerialization
       - com.example.HTTPKt.configureHTTP
+      - com.example.SecurityKt.configureSecurity
       - com.example.RoutingKt.configureRouting
 
 db:
@@ -14,4 +15,12 @@ db:
   password: "postgres"
   driver: "org.postgresql.Driver"
   maxPoolSize: 10
+
+jwt:
+  secret: "change-me-please-very-secret"
+  issuer: "shoproz"
+  audience: "shoproz-users"
+  realm: "shoproz access"
+  accessTtlMinutes: 30
+  refreshTtlDays: 30
 
