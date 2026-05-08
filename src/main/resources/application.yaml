@@ -1,5 +1,6 @@
 ktor:
   deployment:
+    port: ${?PORT}
     port: 8080
   application:
     modules:
@@ -10,13 +11,17 @@ ktor:
       - com.example.RoutingKt.configureRouting
 
 db:
+  jdbcUrl: ${?DB_URL}
   jdbcUrl: "jdbc:postgresql://localhost:5432/shoproz"
+  user: ${?DB_USER}
   user: "postgres"
+  password: ${?DB_PASSWORD}
   password: "postgres"
   driver: "org.postgresql.Driver"
   maxPoolSize: 10
 
 jwt:
+  secret: ${?JWT_SECRET}
   secret: "change-me-please-very-secret"
   issuer: "shoproz"
   audience: "shoproz-users"
