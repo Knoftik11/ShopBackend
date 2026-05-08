@@ -5,8 +5,8 @@ services:
       POSTGRES_DB: shoproz
       POSTGRES_USER: shoproz
       POSTGRES_PASSWORD: shoproz_pass
-    ports:
-      - "5432:5432"
+    expose:
+      - "5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
     healthcheck:
@@ -26,8 +26,8 @@ services:
       DB_PASSWORD: shoproz_pass
       JWT_SECRET: ${JWT_SECRET:-dev-secret-change-me}
       PORT: 8080
-    ports:
-      - "8080:8080"
+    expose:
+      - "8080"
 
 volumes:
   pgdata:
