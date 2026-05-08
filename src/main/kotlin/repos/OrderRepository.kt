@@ -67,6 +67,56 @@ class OrderRepository {
         } > 0
     }
 
+    fun createFromCart(userId: Int, address: String?): OrderDto = transaction {
+        val cartRows = (CartItems innerJoin Products)
+            .selectAll()
+            .where { CartItems.userId eq userId }
+            .toList()
+
+        if (cartRows.isEmpty()) {
+            throw IllegalArgumentException("корзина пуста")
+        }
+
+        var total = BigDecimal.ZERO
+        for (row in cartRows) {
+            val qty = row[CartItems.quantity]
+            val stock = row[Products.stock]
+            if (qty > stock) {
+                val name = row[Products.name]
+                throw IllegalArgumentException("товара \"$name\" недостаточно на складе")
+            }
+            total += row[Products.price] * qty.toBigDecimal()
+        }
+
+        val orderId = Orders.insertAndGetId {
+            it[Orders.userId] = EntityID(userId, com.example.tables.Users)
+            it[Orders.status] = OrderStatus.PENDING
+            it[Orders.total] = total
+            it[Orders.address] = address
+        }.value
+
+        for (row in cartRows) {
+            val pid = row[Products.id].value
+            val qty = row[CartItems.quantity]
+            val price = row[Products.price]
+            OrderItems.insert {
+                it[OrderItems.orderId] = EntityID(orderId, Orders)
+                it[OrderItems.productId] = EntityID(pid, Products)
+                it[OrderItems.quantity] = qty
+                it[OrderItems.priceAtTime] = price
+            }
+            Products.update({ Products.id eq pid }) {
+                with(org.jetbrains.exposed.sql.SqlExpressionBuilder) {
+                    it.update(Products.stock, Products.stock - qty)
+                }
+            }
+        }
+
+        CartItems.deleteWhere { CartItems.userId eq userId }
+
+        findById(orderId) ?: error("заказ не создан")
+    }
+
     private fun loadItems(orderId: Int): List<OrderItemDto> {
         return (OrderItems innerJoin Products)
             .selectAll()
