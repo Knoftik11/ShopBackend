@@ -9,5 +9,8 @@ fun Application.configureRouting() {
         get("/") {
             call.respondText("Hello, World!")
         }
+        get("/ping") {
+            call.respond(mapOf("status" to "ok"))
+        }
     }
 }
