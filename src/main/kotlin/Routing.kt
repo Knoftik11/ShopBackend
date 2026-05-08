@@ -1,10 +1,12 @@
 package com.example
 
 import com.example.auth.AuthService
+import com.example.repos.CartRepository
 import com.example.repos.CategoryRepository
 import com.example.repos.ProductRepository
 import com.example.repos.UserRepository
 import com.example.routes.authRoutes
+import com.example.routes.cartRoutes
 import com.example.routes.categoryRoutes
 import com.example.routes.productRoutes
 import io.ktor.server.application.*
@@ -15,6 +17,7 @@ fun Application.configureRouting() {
     val userRepo = UserRepository()
     val productRepo = ProductRepository()
     val categoryRepo = CategoryRepository()
+    val cartRepo = CartRepository()
     val authService = AuthService(userRepo, jwtConfig)
 
     routing {
@@ -27,5 +30,6 @@ fun Application.configureRouting() {
         authRoutes(authService)
         productRoutes(productRepo)
         categoryRoutes(categoryRepo)
+        cartRoutes(cartRepo)
     }
 }
